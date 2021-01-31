@@ -24,6 +24,7 @@
     "last 1 Chrome version"
   ],
   "devDependencies": {
+    "cssnano": "^4.1.10",
     "parcel-plugin-static-files-copy": "^2.5.0",
     "workbox-cli": "^6.0.2"
   },
