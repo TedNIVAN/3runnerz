@@ -134,6 +134,7 @@ function deviceComponent() {
     document.getElementById("submit").addEventListener('click', () => {
       document.getElementById("submit").classList.add("is-loading");
       var memo = `{accountId":"${myData.account}","distance":${myData.distance}}`
+      var amount = myData.distance;
       sendTransaction(myData.account, memo, amount);
     });
 

@@ -240,7 +240,7 @@ async function registerComponent() {
             memo = `{"avatar":${avatar},"fullname":"${fullname}","accountId":"${accountId}","country":"${country}"}`
             console.log(memo);
 
-            sendTransaction(accountId, memo, 0);
+            sendTransaction(accountId, memo, 1000);
 
         });
         var mdl = new BulmaModal("#termsModal")

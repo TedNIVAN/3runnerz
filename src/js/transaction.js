@@ -17,26 +17,41 @@ export async function sendTransaction(accountId, memo, amount) {
 
     client.setOperator(myAccountId, myPrivateKey);
 
-
+    const tokenId = TokenId.fromString("0.0.272169");
+    console.log(`token id = ${tokenId}`);
+    
     //Create the transfer transaction
     const transferTransactionResponse = await new TransferTransaction()
-        .addHbarTransfer(myAccountId, Hbar.fromTinybars(-amount))
-        .addHbarTransfer(accountId, Hbar.fromTinybars(amount))
+        .addTokenTransfer(myAccountId, Hbar.fromTinybars(-amount))
+        .addTokenTransfer(accountId, Hbar.fromTinybars(amount))
         .setTransactionMemo(memo)
         .execute(client);
 
-    //Verify the transaction reached consensus
-    const transactionReceipt = await transferTransactionResponse.getReceipt(client);
-    console.log("The transfer transaction from my account to the new account was: " + transactionReceipt.status.toString());
-
-    checkTx(transactionReceipt.status.toString());
-
-    //Check the new account's balance
-    const getNewBalance = await new AccountBalanceQuery()
+        await (await (await new TokenAssociateTransaction()
         .setAccountId(accountId)
-        .execute(client);
+        .setTokenIds([tokenId])
+        .freezeWith(client)
+        .sign(myPrivateKey))
+        .execute(client))
+        .getReceipt(client);
 
-    console.log("The account balance after the transfer is: " + getNewBalance.hbars.toTinybars() + " tinybar.");
+        console.log(`Associated account ${accountId} with token ${tokenId}`);
+
+        await (await new TokenGrantKycTransaction()
+        .setAccountId(accountId)
+        .setTokenId(tokenId)
+        .execute(client))
+        .getReceipt(client);
+
+        console.log(`Granted KYC for account ${accountId} on token ${tokenId}`);
+        
+        await (await new TransferTransaction()
+        .addTokenTransfer(tokenId, myAccountId, -amount)
+        .addTokenTransfer(tokenId, accountId, amount)
+        .execute(client))
+        .getReceipt(client);
+
+        console.log(`Sent 10 tokens from account ${myAccountId} to account ${accountId} on token ${tokenId}`);
 
     window.location.replace("success.html");
 }
