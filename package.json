@@ -1,0 +1,34 @@
+{
+  "name": "3runnerz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "parcel src/*.html --out-dir docs -p 2000",
+    "prod": "parcel build src/*.html --out-dir docs --public-url ./",
+    "postbuild": "workbox generateSW"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.0.13",
+    "coingecko-api": "^1.0.10",
+    "countup.js": "^2.0.7",
+    "dotenv": "^8.2.0",
+    "flag-icon-css": "^3.5.0",
+    "jquery": "^3.5.1",
+    "jsdom": "^16.4.0",
+    "jsen": "^0.6.6"
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ],
+  "devDependencies": {
+    "parcel-plugin-static-files-copy": "^2.5.0",
+    "workbox-cli": "^6.0.2"
+  },
+  "staticFiles": {
+    "staticPath": "src/assets",
+    "watcherGlob": "**"
+  }
+}

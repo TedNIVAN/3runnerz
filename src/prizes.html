@@ -1,0 +1,157 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <title>3Runnerz</title>
+  <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+  <script src="https://kit.fontawesome.com/7dc3015a44.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+
+      <a href="index.html">
+        <strong class="navbar-item" style="font-size: 2em;">
+          <span style="color: #3273dc;">3</span>Runnerz
+          <span class="tag is-light is-normal" style="position: relative; top: 25px">Beta</span>
+        </strong>
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        data-target="navbarBasicExample"
+        onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Get Started
+          </a>
+
+          <div class="navbar-dropdown">
+            <a href="about.html" class="navbar-item">
+              About
+            </a>
+            <hr class="navbar-divider">
+            <a href="leaderboard.html" class="navbar-item">
+              Leaderboard
+            </a>
+            <a href="prizes.html" class="navbar-item">
+              Prizes
+            </a>
+
+            <a href="marketplace.html" class="navbar-item">
+              Marketplace
+            </a>
+            <hr class="navbar-divider">
+            <a href="performance.html" class="navbar-item">
+              Register Performance
+            </a>
+            <hr class="navbar-divider">
+            <a href="download.html" class="navbar-item">
+              Download App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-dark" href="register.html">
+            Register Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section has-background-light has-text-centered" style="margin-top: 25px; min-height: 90vh;">
+    <h1 class="title">Prizes</h1>
+    <h2 class="subtitle">Discover all NFT prizes</h2>
+    <div class="container has-text-centered" style="padding-top: 70px;">
+      <div class="columns  has-text-centered">
+        <div class="column ">
+          <img src="assets/gRUNz.png" alt="" width="70%">
+          <br>
+          Gold Medal (gRUNz)
+          <br>
+          Total Supply: 10
+          <br>
+          <a class="nft" id="gRUNz">more info.</a>
+        </div>
+        <div class="column ">
+          <img src="assets/sRUNz.png" alt="" width="70%">
+          <br>
+          Silver Medal (sRUNz)
+          <br>
+          Total Supply: 10
+          <br>
+          <a class="nft" id="sRUNz">more info.</a>
+        </div>
+        <div class="column ">
+          <img src="assets/bRUNz.png" alt="" width="70%">
+          <br>
+          Bronze Medal (bRUNz)
+          <br>
+          Total Supply: 10
+          <br>
+          <a class="nft" id="bRUNz">more info.</a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer class="footer has-background-light" style="margin-top: 1em;">
+    <div class="content has-text-centered">
+      <p>
+        Copyright © 2021 | <strong>3Runnerz</strong>. All rights reserved. <br> <br>
+        <a target="_blank" href="https://github.com/3runnerz" class="button">
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>GitHub</span>
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <div class="modal" id="myModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <strong id="nfttitle"></strong>
+        <p class="modal-card-title"></p>
+        <button class="delete" aria-label="close" data-bulma-modal="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <center>
+          <div id="nftgrid" class="columns is-multiline is-vcentered is-centered has-text-centered">
+          </div>
+        </center>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button" data-bulma-modal="close">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="js/prizes.js"></script>
+</body>
+
+</html>
