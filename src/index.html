@@ -258,10 +258,10 @@
 
   <script src="./main.js"></script>
   <script>
-    const sw = '/3runnerz/service-worker.js'; // it is needed because parcel will not recognize this as a file and not precess in its manner
+    const sw = 'service-worker.js'; // it is needed because parcel will not recognize this as a file and not precess in its manner
 
     navigator.serviceWorker
-      .register(sw, {scope: '/3runnerz/'})
+      .register(sw)
       .then(registration => {
         registration.onupdatefound = () => {
           const installingWorker = registration.installing;
