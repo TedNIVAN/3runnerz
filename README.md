@@ -29,7 +29,7 @@ npm run dev
 
 ## Getting Started | Hardware
 
-![Device](https://github.com/TedNIVAN/3runnerz/device.png)
+![Device](https://github.com/TedNIVAN/3runnerz/blob/master/device.png)
 
 The hardware is made of a microcontroller (MCU) and a 3-axis accelerometer (ADXL 335).
 Here the Adafruit Feather M0 Express is used but you could use any popular MCU on the market as long as it has WebUSB support to enable USB transfer via the web navigator ([see here](https://github.com/webusb/arduino#compatible-hardware)).
