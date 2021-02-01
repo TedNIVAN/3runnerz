@@ -1,4 +1,4 @@
-import { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, TransferTransaction } from '@hashgraph/sdk'
+import { Client, TokenId, TokenAssociateTransaction , AccountId, PrivateKey, TokenGrantKycTransaction, AccountCreateTransaction, AccountBalanceQuery, Hbar, TransferTransaction } from '@hashgraph/sdk'
 
 export async function sendTransaction(accountId, memo, amount) {
     //Grab your Hedera testnet account ID and private key from your .env file
@@ -17,41 +17,16 @@ export async function sendTransaction(accountId, memo, amount) {
 
     client.setOperator(myAccountId, myPrivateKey);
 
-    const tokenId = TokenId.fromString("0.0.272169");
+    const tokenId = TokenId.fromString("0.0.294201");
     console.log(`token id = ${tokenId}`);
-    
-    //Create the transfer transaction
-    const transferTransactionResponse = await new TransferTransaction()
-        .addTokenTransfer(myAccountId, Hbar.fromTinybars(-amount))
-        .addTokenTransfer(accountId, Hbar.fromTinybars(amount))
-        .setTransactionMemo(memo)
-        .execute(client);
 
-        await (await (await new TokenAssociateTransaction()
-        .setAccountId(accountId)
-        .setTokenIds([tokenId])
-        .freezeWith(client)
-        .sign(myPrivateKey))
+    await (await new TransferTransaction()
+        .addTokenTransfer(tokenId, AccountId.fromString(myAccountId), -amount)
+        .addTokenTransfer(tokenId, AccountId.fromString(accountId), amount)
         .execute(client))
         .getReceipt(client);
 
-        console.log(`Associated account ${accountId} with token ${tokenId}`);
-
-        await (await new TokenGrantKycTransaction()
-        .setAccountId(accountId)
-        .setTokenId(tokenId)
-        .execute(client))
-        .getReceipt(client);
-
-        console.log(`Granted KYC for account ${accountId} on token ${tokenId}`);
-        
-        await (await new TransferTransaction()
-        .addTokenTransfer(tokenId, myAccountId, -amount)
-        .addTokenTransfer(tokenId, accountId, amount)
-        .execute(client))
-        .getReceipt(client);
-
-        console.log(`Sent 10 tokens from account ${myAccountId} to account ${accountId} on token ${tokenId}`);
+    console.log(`Sent ${amount} tokens from account ${myAccountId} to account ${accountId} on token ${tokenId}`);
 
     window.location.replace("success.html");
 }

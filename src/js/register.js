@@ -187,7 +187,7 @@ async function registerComponent() {
          
             if (this.value.length !== 10 || accountIdOkay === true) {
                 document.getElementById("accountIdErr").style.visibility = "visible";
-                document.getElementById("accountIdErr").innerText = "address invalid or already taken";
+                document.getElementById("accountIdErr").innerText = "account Id invalid or already taken";
                 document.getElementById("accountId").classList.add("is-danger");
                 document.getElementById("submit").disabled = true;
                 accountIdOkay = false;

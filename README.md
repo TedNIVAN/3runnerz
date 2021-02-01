@@ -1,7 +1,7 @@
 # 3runnerz
-3Runnerz is a blockchain-based running application based on Hedera Hashgraph.
+3Runnerz is a blockchain-based running application based on [Hedera Hashgraph](https://hedera.com/).
 
-## Getting Started
+## Getting Started | Software
 
 **Here you will see how to run the app locally.**
 
@@ -26,3 +26,12 @@ npm run dev
 ```
 
 **App should be running at: http://localhost:2000**
+
+## Getting Started | Hardware
+
+![Device](https://github.com/TedNIVAN/3runnerz/device.png)
+
+The hardware is made of a microcontroller (MCU) and a 3-axis accelerometer (ADXL 335).
+Here the Adafruit Feather M0 Express is used but you could use any popular MCU on the market as long as it has WebUSB support to enable USB transfer via the web navigator ([see here](https://github.com/webusb/arduino#compatible-hardware)).
+
+The source code is available within the arduino folder. Make sure to adapt the code regarding the MCU you use. Note that you will need to install the Arduino IDE to program the MCU (follow the guide [here](https://www.arduino.cc/en/Guide)).
