@@ -3,6 +3,8 @@
 
 ## Getting Started | Software
 
+![3Runnerz](https://github.com/TedNIVAN/3runnerz/blob/master/3runnerz.png)
+
 **Here you will see how to run the app locally.**
 
 1. Clone the fruity market repository.
