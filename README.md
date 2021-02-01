@@ -31,7 +31,7 @@ npm run dev
 
 ![Device](https://github.com/TedNIVAN/3runnerz/blob/master/device.png)
 
-The hardware is made of a microcontroller (MCU) and a 3-axis accelerometer (ADXL 335).
-Here the Adafruit Feather M0 Express is used but you could use any popular MCU on the market as long as it has WebUSB support to enable USB transfer via the web navigator ([see here](https://github.com/webusb/arduino#compatible-hardware)).
+The hardware is made of a **microcontroller (MCU)** and a **3-axis accelerometer (ADXL 335)**. <br />
+Here the **Adafruit Feather M0 Express** is used but you could use any popular MCU on the market as long as it has WebUSB support to enable USB transfer via the web navigator ([see here](https://github.com/webusb/arduino#compatible-hardware)).
 
-The source code is available within the arduino folder. Make sure to adapt the code regarding the MCU you use. Note that you will need to install the Arduino IDE to program the MCU (follow the guide [here](https://www.arduino.cc/en/Guide)).
+The source code is available under the arduino folder. Make sure to adapt the code regarding the MCU you use. Note that you will need to install the **Arduino IDE** to program the MCU (follow the guide [here](https://www.arduino.cc/en/Guide)).
