@@ -1,70 +1,36 @@
 import { sendTransaction } from './transaction'
-
+import { serial } from './serial'
+const { Client, PrivateKey, AccountCreateTransaction, AccountId, TokenId, TokenAssociateTransaction, TokenGrantKycTransaction, TransferTransaction, AccountBalanceQuery, Hbar, Mnemonic } = require("@hashgraph/sdk");
 require("dotenv").config();
+
+
+var port;
+
+function registerDevice() {
+  'use strict';
+console.log("fdfd");
+  document.addEventListener('DOMContentLoaded', event => {
+
+  });
+}
+
+function withdrawFruit(str) {
+  if (port !== undefined) {
+    let textEncoder = new TextEncoder();
+    port.send(textEncoder.encode(str)).catch(error => {
+      console.log('Send error: ' + error);
+    });
+  }
+}
+
 
 var memo;
 var accountId;
-var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
+export var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "031-archer.png", "033-wrestler-1.png", "039-weightlifting.png", "046-volleyball.png", "047-basketball-player.png"];
 var count = 0;
-var fullnameOkay = false;
-var accountIdOkay = true;
-
-console.log(runners.length);
-
-function isAlreadyTaken(accountId) {
-    console.log(accountId);
-    var xhr = new XMLHttpRequest();
-    var runnerz = [];
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-            var res = JSON.parse(this.responseText);
-
-            res.data.forEach(e => {
-                try {
-                    if (validate(JSON.parse(`${e.memo}`))) {
-                        runnerz.push(JSON.parse(`${e.memo}`));
-                        //console.log(runnerz);
-                    }
-                } catch (err) {
-                    console.log(err);
-                }
-            });
-            return checkRunnerz(accountId, runnerz)
-        }
-
-
-    });
-
-    xhr.open("GET", "https://api-testnet.dragonglass.me/hedera/api/accounts/0.0.221495/transactions");
-    xhr.onload = function () {
-        runnerz.forEach(e => {
-            console.log(e);
-            if(e.accountId === accountId) {
-                accountIdOkay = false;
-            }
-
-        });
-        console.log(accountIdOkay);
-    };
-    xhr.setRequestHeader("X-API-KEY", process.env.DRAGONGLASS_KEY);
-
-    xhr.send();
-
-
-}
-
-function checkRunnerz(accountId, runnerz) {
-    runnerz.forEach(e => {
-        console.log(e);
-        if (e.accountId === accountId) {
-            console.log("ya");
-            return true;
-        } else {
-            console.log("no");
-            return false;
-        }
-    });
-}
+var lastnameOkay = false;
+var firstnameOkay = false;
+var accountmdl;
 
 class BulmaModal {
     constructor(selector) {
@@ -114,11 +80,20 @@ class BulmaModal {
     }
 }
 
-
-
 async function registerComponent() {
 
     document.addEventListener('DOMContentLoaded', event => {
+
+        accountmdl = new BulmaModal("#accountModal")
+
+        accountmdl.addEventListener('modal:show', function () {
+            console.log("opened")
+        })
+
+        accountmdl.addEventListener("modal:close", function () {
+            console.log("closed")
+        })
+
 
         document.getElementById("leftImg").src = runners[count];
         document.getElementById("midImg").src = runners[count + 1];
@@ -160,44 +135,44 @@ async function registerComponent() {
             }
         });
 
-        document.getElementById("fullname").addEventListener('change', function () {
+        document.getElementById("lastname").addEventListener('change', function () {
             if (this.value.length < 2) {
-                document.getElementById("fullnameErr").style.visibility = "visible";
-                document.getElementById("fullnameErr").innerText = "fullname must at least 2 characters";
-                document.getElementById("fullname").classList.add("is-danger");
-                fullnameOkay = false;
-                document.getElementById("accountId").disabled = true;
+                document.getElementById("lastnameErr").style.visibility = "visible";
+                document.getElementById("lastnameErr").innerText = "lastname must at least 2 characters";
+                document.getElementById("lastname").classList.add("is-danger");
+                lastnameOkay = false;
             }
             else if (this.value.length > 25) {
-                document.getElementById("fullnameErr").style.visibility = "visible";
-                document.getElementById("fullnameErr").innerText = "fullname must at most 25 characters";
-                document.getElementById("fullname").classList.add("is-danger");
-                fullnameOkay = false;
-                document.getElementById("accountId").disabled = true;
+                document.getElementById("lastnameErr").style.visibility = "visible";
+                document.getElementById("lastnameErr").innerText = "lastname must at most 25 characters";
+                document.getElementById("lastname").classList.add("is-danger");
+                lastnameOkay = false;
             }
             else {
-                document.getElementById("fullnameErr").style.visibility = "hidden";
-                document.getElementById("fullname").classList.remove("is-danger");
-                fullnameOkay = true;
-                document.getElementById("accountId").disabled = false;
+                document.getElementById("lastnameErr").style.visibility = "hidden";
+                document.getElementById("lastname").classList.remove("is-danger");
+                lastnameOkay = true;
+                document.getElementById("firstname").disabled = false;
             }
         });
 
-        document.getElementById("accountId").addEventListener('change', function () {
-         
-            if (this.value.length !== 10 || accountIdOkay === true) {
-                document.getElementById("accountIdErr").style.visibility = "visible";
-                document.getElementById("accountIdErr").innerText = "account Id invalid or already taken";
-                document.getElementById("accountId").classList.add("is-danger");
-                document.getElementById("submit").disabled = true;
-                accountIdOkay = false;
-                document.getElementById("terms").disabled = true;
-                //address is already taken
+        document.getElementById("firstname").addEventListener('change', function () {
+            if (this.value.length < 2) {
+                document.getElementById("firstnameErr").style.visibility = "visible";
+                document.getElementById("firstnameErr").innerText = "firstname must at least 2 characters";
+                document.getElementById("firstname").classList.add("is-danger");
+                firstnameOkay = false;
+            }
+            else if (this.value.length > 25) {
+                document.getElementById("firstnameErr").style.visibility = "visible";
+                document.getElementById("firstnameErr").innerText = "firstname must at most 25 characters";
+                document.getElementById("firstname").classList.add("is-danger");
+                firstnameOkay = false;
             }
             else {
-                document.getElementById("accountIdErr").style.visibility = "hidden";
-                document.getElementById("accountId").classList.remove("is-danger");
-                accountIdOkay = true;
+                document.getElementById("firstnameErr").style.visibility = "hidden";
+                document.getElementById("firstname").classList.remove("is-danger");
+                firstnameOkay = true;
                 document.getElementById("terms").disabled = false;
             }
         });
@@ -212,21 +187,15 @@ async function registerComponent() {
 
         document.getElementById("submit").addEventListener("click", function () {
 
-            document.getElementById("submit").classList.add("is-loading");
+            var lastname = document.getElementById("lastname").value;
 
-            var fullname = document.getElementById("fullname").value;
-
-            accountId = document.getElementById("accountId").value;
+            var firstname = document.getElementById("firstname").value;
 
             var selectCountry = document.getElementById("country");
             var country = selectCountry.value;
 
-            //var x = selectCountry.selectedIndex;
-            //var y = selectCountry.options;
-            //var countryId = y[x].index;
-
-            console.log(fullname);
-            console.log(accountId);
+            console.log(lastname);
+            console.log(firstname);
             console.log(country);
 
             var avatar;
@@ -237,10 +206,13 @@ async function registerComponent() {
                 avatar = mod(count + 1, runners.length);
             }
 
-            memo = `{"avatar":${avatar},"fullname":"${fullname}","accountId":"${accountId}","country":"${country}"}`
+            memo = `{"avatar":${avatar},"lastname":"${firstname} ${lastname}","accountId":"${accountId}","country":"${country}"}`
             console.log(memo);
 
-            sendTransaction(accountId, memo, 1000);
+            console.log("yaaaa");
+            createAccount(memo);
+
+
 
         });
         var mdl = new BulmaModal("#termsModal")
@@ -256,6 +228,9 @@ async function registerComponent() {
         mdl.addEventListener("modal:close", function () {
             console.log("closed")
         })
+
+
+
 
     });
 }
@@ -273,10 +248,10 @@ var validate = jsen(
         type: 'object',
         minProperties: 4,
         maxProperties: 4,
-        required: ['accountId', 'fullname', 'country', 'avatar'],
+        required: ['accountId', 'lastname', 'country', 'avatar'],
         properties: {
             accountId: { type: 'string' },
-            fullname: { type: 'string' },
+            lastname: { type: 'string' },
             country: { type: 'string' },
             avatar: { type: 'number' }
         },
@@ -284,15 +259,207 @@ var validate = jsen(
     }
 );
 
-console.log(validate(JSON.parse(`{"avatar":0,"fullname":"Tony","accountId":"0.0.250439","country":"lb"}`)));
+console.log(validate(JSON.parse(`{"avatar":0,"lastname":"Tony","accountId":"0.0.250439","country":"lb"}`)));
 
 registerComponent();
 
 
+async function createAccount(memo) {
 
+    //Grab your Hedera testnet account ID and private key from your .env file
+    const myAccountId = process.env.MY_ACCOUNT_ID;
+    const myPrivateKey = process.env.MY_PRIVATE_KEY;
 
+    // If we weren't able to grab it, we should throw a new error
+    if (myAccountId == null ||
+        myPrivateKey == null) {
+        throw new Error("Environment variables myAccountId and myPrivateKey must be present");
+    }
 
+    // Create our connection to the Hedera network
+    // The Hedera JS SDK makes this reallyyy easy!
+    const client = Client.forTestnet();
 
+    client.setOperator(myAccountId, myPrivateKey);
 
+    //Create new keys
+    const newAccountMnemonic = await Mnemonic.generate();
+    const newAccountPrivateKey = await PrivateKey.fromMnemonic(newAccountMnemonic);
+    const newAccountPublicKey = newAccountPrivateKey.publicKey;
+
+    console.log("newAccountMnemonic: " + newAccountMnemonic);
+    console.log(newAccountMnemonic.toString().split(" "));
+    console.log("newAccountMnemonic: " + newAccountMnemonic);
+    console.log("newAccountPrivateKey: " + newAccountPrivateKey);
+    console.log("newAccountPublicKey: " + newAccountPrivateKey.publicKey);
+
+    const mnemonic = newAccountMnemonic.toString().split(" ");
+    document.getElementById("accountInfo").innerHTML = ``;
+    mnemonic.forEach((e, i) => {
+        document.getElementById("accountInfo").innerHTML +=
+            `
+        <div class="column is-3">
+        <span class="tag is-rounded is-info is-light" style="width: 100px">${i + 1} | ${e}</span>
+        </div>
+        `;
+    });
+
+    accountmdl.show();
+
+    footerMenu();
+
+    //Create a new account with 1,000 tinybar starting balance
+    const newAccountTransactionResponse = await new AccountCreateTransaction()
+        .setKey(newAccountPublicKey)
+        .setInitialBalance(Hbar.fromTinybars(1000))
+        .setTransactionMemo(memo)
+        .execute(client);
+
+    // Get the new account ID
+    const getReceipt = await newAccountTransactionResponse.getReceipt(client);
+    const newAccountId = getReceipt.accountId;
+
+    accountId = newAccountId;
+
+    console.log("The new account ID is: " + newAccountId);
+
+    //Verify the account balance
+    const accountBalance = await new AccountBalanceQuery()
+        .setAccountId(newAccountId)
+        .execute(client);
+
+    console.log("The new account balance is: " + accountBalance.hbars.toTinybars() + " tinybar.");
+
+    //
+    const tokenId = TokenId.fromString("0.0.300642");
+    console.log(`token id = ${tokenId}`);
+    const amount = 1000;
+
+    await (await (await new TokenAssociateTransaction()
+        .setAccountId(newAccountId)
+        .setTokenIds([tokenId])
+        .freezeWith(client)
+        .sign(newAccountPrivateKey))
+        .execute(client))
+        .getReceipt(client);
+
+    console.log(`Associated account ${newAccountId} with token ${tokenId}`);
+
+    // No KYC
+
+    await (await (await new TransferTransaction()
+        .addTokenTransfer(tokenId, client.operatorAccountId, -amount)
+        .addTokenTransfer(tokenId, newAccountId, amount)
+        .sign(newAccountPrivateKey))
+        .execute(client))
+        .getReceipt(client);
+
+    console.log(`Sent ${amount} tokens from account ${client.operatorAccountId} to account ${newAccountId} on token ${tokenId}`);
+
+    document.getElementById("mnemonicBtn").disabled = false;
+}
+
+function footerMenu() {
+
+    document.getElementById("mnemonicBtn").addEventListener('click', () => {
+        console.log("ok");
+        document.getElementById("modal-card-foot").innerHTML =
+            `
+        <button class="button" id="accountidBtn">I wrote down my account id</button>
+        `;
+        document.getElementById("modal-card-title").innerHTML = `Account creation completed`;
+        document.getElementById("alert").innerHTML = `Write down your account id`;
+
+        document.getElementById("accountInfo").innerHTML =
+            `
+        <div class="column" style="margin: 30px">
+        <span class="tag is-info is-large is-light">${accountId}</span>
+        </div>
+        `;
+
+        document.getElementById("accountidBtn").addEventListener('click', () => {
+            console.log("ok3");
+            document.getElementById("modal-card-title").innerHTML = `Device registration`;
+            document.getElementById("alert").innerHTML = `Connect your device`;
+            document.getElementById("accountInfo").innerHTML =
+                `
+            <div class="column" style="margin: 30px">
+            <figure class="image is-128x128">
+            <img src="usb.png" alt="">
+            </figure>
+            </div>
+            `;
+            document.getElementById("modal-card-foot").innerHTML =
+                `
+            <button class="button" id="registerBtn">Register Device</button>
+            `;
+
+            let connectButton = document.querySelector('#registerBtn');
+
+            function connect() {
+                //connectButton.classList.add("is-loading");
+              console.log('Connecting to ' + port.device_.productName + '...');
+              port.connect().then(() => {
+                console.log(port);
+                console.log('Connected.');
+                let view = new Uint8Array(5);
+                view[0] = 7;
+                view[1] = 7;
+                view[2] = 7;
+                view[3] = 2;
+                view[4] = 7;
+                port.send(view);
+                let dr = new Uint8Array(1);
+                dr[0] = 255;
+                port.send(dr);
+                //withdrawFruit('D')
+                //withdrawFruit('A')
+                //withdrawFruit('26789')
+                //connectButton.textContent = 'Disconnect Device';
+                port.onReceive = data => {
+                  let textDecoder = new TextDecoder();
+                   console.log(textDecoder.decode(data));
+                   try{
+                       console.log(JSON.parse(textDecoder.decode(data)));
+                   }catch(err){
+                       console.log(err);
+                   }
+                }
+                port.onReceiveError = error => {
+                  console.log('Receive error: ' + error);
+                };
+              }, error => {
+                console.log('Connection error: ' + error);
+              });
+            };
+        
+            connectButton.addEventListener('click', function () {
+              if (port) {
+                port.disconnect();
+                //connectButton.textContent = 'Connect Device';
+                port = null;
+              } else {
+                serial.requestPort().then(selectedPort => {
+                  port = selectedPort;
+                  connect();
+                }).catch(error => {
+                  console.log('Connection error: ' + error);
+                });
+              }
+            });
+        
+            serial.getPorts().then(ports => {
+              if (ports.length == 0) {
+                console.log('No devices found.');
+              } else {
+                port = ports[0];
+                connect();
+              }
+            });
+
+        });
+    });
+
+}
 
 

@@ -224,16 +224,11 @@ function fetchRunner(accountId, distance) {
               }
             },1500);
 
-
-
           }
         } catch (err) {
           console.log(err);
         }
       });
-
-
-
     }
   });
 
@@ -242,9 +237,5 @@ function fetchRunner(accountId, distance) {
 
   xhr.send();
 }
-
-
-
-
 
 deviceComponent();

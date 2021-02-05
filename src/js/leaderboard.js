@@ -1,4 +1,6 @@
+import { runners } from './register'
 require("dotenv").config();
+
 var jsen = require('jsen');
 var validate = jsen(
     {
@@ -15,8 +17,6 @@ var validate = jsen(
         additionalProperties: false
     }
 );
-
-var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
 
 function leaderboardComponent() {
     var xhr = new XMLHttpRequest();

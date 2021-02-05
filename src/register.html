@@ -122,21 +122,21 @@
             </div>
           </div>
           <div class="field">
-            <label class="label">Fullname</label>
+            <label class="label">Lastname</label>
             <div class="control">
-              <input id="fullname" class="input" type="text" placeholder="Satoshi Nakamoto">
+              <input id="lastname" class="input" type="text" placeholder="Nakamoto">
             </div>
-            <p class="help is-danger" id="fullnameErr" style="visibility: hidden;"></p>
+            <p class="help is-danger" id="lastnameErr" style="visibility: hidden;"></p>
           </div>
 
           <div class="field">
             <label class="label">
-              <a target="_blank" href="https://myhbarwallet.com/create-account">Account Id for receiving rewards</a>
+              Firstname
             </label>
             <div class="control">
-              <input id="accountId" class="input" type="email" placeholder="0.0.221495" disabled>
+              <input id="firstname" class="input" type="text" placeholder="Satoshi" disabled>
             </div>
-            <p class="help is-danger" id="accountIdErr" style="visibility: hidden;"></p>
+            <p class="help is-danger" id="firstnameErr" style="visibility: hidden;"></p>
           </div>
 
           <div class="field">
@@ -181,7 +181,6 @@
                   <option value="kh">Cambodia</option>
                   <option value="cm">Cameroon</option>
                   <option value="ca">Canada</option>
-                  <option value="Cape Verde">Cape Verde</option>
                   <option value="ky">Cayman Islands</option>
                   <option value="cf">Central African Republic</option>
                   <option value="td">Chad</option>
@@ -191,8 +190,6 @@
                   <option value="cc">Cocos (Keeling) Islands</option>
                   <option value="co">Colombia</option>
                   <option value="km">Comoros</option>
-                  <option value="Congo">Congo</option>
-                  <option value="Congo, The Democratic Republic of The">Congo, The Democratic Republic of The</option>
                   <option value="ck">Cook Islands</option>
                   <option value="cr">Costa Rica</option>
                   <option value="ci">Cote D'ivoire</option>
@@ -236,7 +233,6 @@
                   <option value="gw">Guinea-bissau</option>
                   <option value="gy">Guyana</option>
                   <option value="ht">Haiti</option>
-                  <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald Islands</option>
                   <option value="va">Holy See (Vatican City State)</option>
                   <option value="hn">Honduras</option>
                   <option value="hk">Hong Kong</option>
@@ -257,8 +253,6 @@
                   <option value="kzn">Kazakhstan</option>
                   <option value="ke">Kenya</option>
                   <option value="ki">Kiribati</option>
-                  <option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option>
-                  <option value="Korea, Republic of">Korea, Republic of</option>
                   <option value="kw">Kuwait</option>
                   <option value="kg">Kyrgyzstan</option>
                   <option value="la">Lao People's Democratic Republic</option>
@@ -271,8 +265,6 @@
                   <option value="lt">Lithuania</option>
                   <option value="lu">Luxembourg</option>
                   <option value="mo">Macao</option>
-                  <option value="Macedonia, The Former Yugoslav Republic of">Macedonia, The Former Yugoslav Republic of
-                  </option>
                   <option value="mg">Madagascar</option>
                   <option value="mw">Malawi</option>
                   <option value="my">Malaysia</option>
@@ -285,7 +277,6 @@
                   <option value="mu">Mauritius</option>
                   <option value="yt">Mayotte</option>
                   <option value="mx">Mexico</option>
-                  <option value="Micronesia, Federated States of">Micronesia, Federated States of</option>
                   <option value="md">Moldova, Republic of</option>
                   <option value="mc">Monaco</option>
                   <option value="mn">Mongolia</option>
@@ -306,12 +297,10 @@
                   <option value="ng">Nigeria</option>
                   <option value="nu">Niue</option>
                   <option value="nf">Norfolk Island</option>
-                  <option value="Northern Mariana Islands">Northern Mariana Islands</option>
                   <option value="no">Norway</option>
                   <option value="om">Oman</option>
                   <option value="pk">Pakistan</option>
                   <option value="pw">Palau</option>
-                  <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option>
                   <option value="pa">Panama</option>
                   <option value="pg">Papua New Guinea</option>
                   <option value="py">Paraguay</option>
@@ -428,6 +417,33 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button" data-bulma-modal="close">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="modal" id="accountModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head has-text-centered">
+        <p class="modal-card-title" id="modal-card-title">Account creation</p>
+        <a href="register.html" class="delete" aria-label="close" data-bulma-modal="close"></a>
+      </header>
+      <section class="modal-card-body">
+        <center>
+          <div class="columns is-vcentered has-background-danger-light">
+            <div class="column">
+              <strong class="has-text-black"><i class="fas fa-exclamation-triangle"></i> <span id="alert">Write down
+                  your mnemonic</span>
+              </strong>
+              <br>
+            </div>
+          </div>
+          <div id="accountInfo" class="columns is-multiline">
+          </div>
+        </center>
+      </section>
+      <footer class="modal-card-foot" id="modal-card-foot">
+        <button class="button" id="mnemonicBtn" disabled>I wrote down my mnemonic</button>
       </footer>
     </div>
   </div>
