@@ -61291,16 +61291,6 @@ async function sendTransaction(accountId, memo, amount) {
   console.log(`Sent ${amount} tokens from account ${client.operatorAccountId} to account ${accountId} on token ${tokenId}`);
   window.location.replace("leaderboard.html");
 }
-
-function checkTx(a) {
-  console.log("hey 1");
-  console.log(a);
-  console.log("hey 2");
-
-  if (a === "SUCCESS") {
-    console.log("Youpi!");
-  }
-}
 },{"@hashgraph/sdk":"../node_modules/@hashgraph/sdk/src/browser.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
@@ -65180,6 +65170,8 @@ var _countup = require("countup.js");
 var _transaction = require("./transaction");
 
 let myData;
+var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
+var port;
 
 require("dotenv").config();
 
@@ -65206,9 +65198,6 @@ var validate = jsen({
   },
   additionalProperties: false
 });
-var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
-var accountId;
-var port;
 
 class BulmaModal {
   constructor(selector) {

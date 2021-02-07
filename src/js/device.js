@@ -3,6 +3,8 @@ import { CountUp } from 'countup.js';
 import { sendTransaction } from './transaction'
 
 let myData;
+var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
+var port;
 
 require("dotenv").config();
 var jsen = require('jsen');
@@ -21,11 +23,6 @@ var validate = jsen(
     additionalProperties: false
   }
 );
-
-var runners = ["001-soccer-player.png", "003-runner.png", "008-runner-1.png", "010-gymnast.png", "015-muay-thai.png", "016-volleyball-player.png", "021-water-polo-1.png", "033-wrestler-1.png", "046-volleyball.png"];
-var accountId;
-
-var port;
 
 class BulmaModal {
   constructor(selector) {

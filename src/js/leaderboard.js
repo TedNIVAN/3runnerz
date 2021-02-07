@@ -58,8 +58,6 @@ function leaderboardComponent() {
                 cell7.innerHTML = "-";
                 cell8.innerHTML = "-";
                 cell9.innerHTML = "-";
-
-                console.log(`<img src="assets/${runners[runnerz[i].avatar]}" alt="" width="75px">`);
             }
         }
     });

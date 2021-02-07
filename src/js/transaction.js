@@ -1,4 +1,4 @@
-import { Client, TokenId, TokenAssociateTransaction, AccountId, PrivateKey, TokenGrantKycTransaction, AccountCreateTransaction, AccountBalanceQuery, Hbar, TransferTransaction } from '@hashgraph/sdk'
+import { Client, TokenId, TransferTransaction } from '@hashgraph/sdk'
 
 export async function sendTransaction(accountId, memo, amount) {
     //Grab your Hedera testnet account ID and private key from your .env file
@@ -32,11 +32,3 @@ export async function sendTransaction(accountId, memo, amount) {
     window.location.replace("leaderboard.html");
 }
 
-function checkTx(a) {
-    console.log("hey 1");
-    console.log(a);
-    console.log("hey 2");
-    if (a === "SUCCESS") {
-        console.log("Youpi!");
-    }
-}

@@ -1,5 +1,5 @@
 import { serial } from './serial'
-const { Client, PrivateKey, AccountCreateTransaction, AccountId, TokenId, TokenAssociateTransaction, TokenGrantKycTransaction, TransferTransaction, AccountBalanceQuery, Hbar, Mnemonic } = require("@hashgraph/sdk");
+const { Client, PrivateKey, AccountCreateTransaction, TokenId, TokenAssociateTransaction, TransferTransaction, AccountBalanceQuery, Hbar, Mnemonic } = require("@hashgraph/sdk");
 require("dotenv").config();
 
 var port;
@@ -11,16 +11,6 @@ function registerDevice() {
 
     });
 }
-
-function withdrawFruit(str) {
-    if (port !== undefined) {
-        let textEncoder = new TextEncoder();
-        port.send(textEncoder.encode(str)).catch(error => {
-            console.log('Send error: ' + error);
-        });
-    }
-}
-
 
 var memo;
 var accountId;
@@ -91,7 +81,6 @@ async function registerComponent() {
         accountmdl.addEventListener("modal:close", function () {
             console.log("closed")
         })
-
 
         document.getElementById("leftImg").src = runners[count];
         document.getElementById("midImg").src = runners[count + 1];
@@ -215,7 +204,6 @@ async function registerComponent() {
 
         });
         var mdl = new BulmaModal("#termsModal")
-        //mdl.show()
 
         document.getElementById("termsbtn").addEventListener('click', event => {
             mdl.show()
@@ -228,40 +216,14 @@ async function registerComponent() {
             console.log("closed")
         })
 
-
-
-
     });
 }
-
 
 function mod(n, m) {
     return ((n % m) + m) % m;
 }
 
-//////
-
-var jsen = require('jsen');
-var validate = jsen(
-    {
-        type: 'object',
-        minProperties: 4,
-        maxProperties: 4,
-        required: ['accountId', 'lastname', 'country', 'avatar'],
-        properties: {
-            accountId: { type: 'string' },
-            lastname: { type: 'string' },
-            country: { type: 'string' },
-            avatar: { type: 'number' }
-        },
-        additionalProperties: false
-    }
-);
-
-console.log(validate(JSON.parse(`{"avatar":0,"lastname":"Tony","accountId":"0.0.250439","country":"lb"}`)));
-
 registerComponent();
-
 
 async function createAccount(memoObj) {
 

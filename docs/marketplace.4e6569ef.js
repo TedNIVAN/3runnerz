@@ -9236,7 +9236,6 @@ function marketPlaceModalfunction() {
   document.querySelectorAll('.sportItem').forEach(item => {
     item.addEventListener('click', event => {
       mdl.show();
-      console.log(item.getAttribute("id"));
       var id = item.getAttribute("id");
       document.getElementById("fimg").src = `${id}.png`;
       var items = [{
