@@ -55,15 +55,17 @@ function leaderboardComponent() {
                 cell4.innerHTML = `<span class="flag-icon flag-icon-${runnerz[i].country}"></span>`;
                 cell5.innerHTML = `<a target="_blank" href="https://explorer.kabuto.sh/testnet/id/${runnerz[i].accountId}">${runnerz[i].accountId}</a>`;
                 cell6.innerHTML = 1000;
-                cell7.innerHTML = 1;
-                cell8.innerHTML = 2;
-                cell9.innerHTML = 1;
+                cell7.innerHTML = "-";
+                cell8.innerHTML = "-";
+                cell9.innerHTML = "-";
+
                 console.log(`<img src="assets/${runners[runnerz[i].avatar]}" alt="" width="75px">`);
             }
         }
     });
 
-    xhr.open("GET", "https://api-testnet.dragonglass.me/hedera/api/accounts/0.0.221495/transactions");
+    xhr.open("GET", "https://api-testnet.dragonglass.me/hedera/api/accounts/0.0.221495/transactions?consensusStartInEpoch=1612713982980");
+
     xhr.setRequestHeader("X-API-KEY", process.env.DRAGONGLASS_KEY);
 
     xhr.send();

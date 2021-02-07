@@ -41,6 +41,9 @@ class BulmaModal {
   close() {
     this.elem.classList.toggle('is-active')
     this.on_close()
+    port.disconnect().catch(error => {
+      console.log('Send error: ' + error);
+    });
   }
 
   close_data() {
@@ -102,19 +105,25 @@ function deviceComponent() {
       <span>Disconnect Device</span>`;
         mdl.show();
 
-        requestData('H')
-
+        let textEncoder = new TextEncoder();
+        let str = "H";
+        port.send(textEncoder.encode(str)).catch(error => {
+          console.log('Send error: ' + error);
+        });
 
         port.onReceive = data => {
           let textDecoder = new TextDecoder();
           let decoded = textDecoder.decode(data);
           console.log(decoded);
-          console.log(decoded.length);
           try {
             myData = JSON.parse(`${decoded}`);
             console.log(myData);
-            fetchRunner(myData.account, myData.distance);
-            document.getElementById("submit").disabled = false;
+            try {
+              fetchRunner(myData.account, myData.distance);
+              document.getElementById("submit").disabled = false;
+            } catch (err) {
+              console.log(err);
+            }
             //document.getElementById("pergrid").innerHTML = `${myData.account}, ${myData.distance}`
           }
           catch (err) {
@@ -197,13 +206,12 @@ function fetchRunner(accountId, distance) {
               console.log("memo");
               console.log(memo);
               document.getElementById("perfgrid").innerHTML = `
-              <div class="column">
+              <div class="column animate__animated animate__flip">
               <figure class="image is-128x128">
                 <img src="${runners[memo.avatar]}" alt="">
               </figure>
               <br>
-              <strong><span class="tag is-light is-rounded is-medium">${memo.fullname}</span></strong>
-              <span class="flag-icon flag-icon-${memo.country}"></span>
+              <strong><span class="tag is-light is-rounded is-medium"><span style="padding-right: 5px;">${memo.fullname}</span><span class="flag-icon flag-icon-${memo.country}"></span></span></strong>
               <br>
               <br>
               <strong><span class="tag is-light is-large" style="width: 130px">distance (m)</span></strong>
@@ -214,15 +222,15 @@ function fetchRunner(accountId, distance) {
             </div>`;
             }
 
-            setTimeout(()=>{
-              const countUp = new CountUp('targetId', distance, {duration: 4});
+            setTimeout(() => {
+              const countUp = new CountUp('targetId', distance, { duration: 4 });
               if (!countUp.error) {
                 countUp.start();
                 document.getElementById('targetId').innerHTML += "m";
               } else {
                 console.error(countUp.error);
               }
-            },1500);
+            }, 1500);
 
           }
         } catch (err) {

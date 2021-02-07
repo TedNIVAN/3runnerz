@@ -1,26 +1,24 @@
-import { sendTransaction } from './transaction'
 import { serial } from './serial'
 const { Client, PrivateKey, AccountCreateTransaction, AccountId, TokenId, TokenAssociateTransaction, TokenGrantKycTransaction, TransferTransaction, AccountBalanceQuery, Hbar, Mnemonic } = require("@hashgraph/sdk");
 require("dotenv").config();
 
-
 var port;
 
 function registerDevice() {
-  'use strict';
-console.log("fdfd");
-  document.addEventListener('DOMContentLoaded', event => {
+    'use strict';
+    console.log("fdfd");
+    document.addEventListener('DOMContentLoaded', event => {
 
-  });
+    });
 }
 
 function withdrawFruit(str) {
-  if (port !== undefined) {
-    let textEncoder = new TextEncoder();
-    port.send(textEncoder.encode(str)).catch(error => {
-      console.log('Send error: ' + error);
-    });
-  }
+    if (port !== undefined) {
+        let textEncoder = new TextEncoder();
+        port.send(textEncoder.encode(str)).catch(error => {
+            console.log('Send error: ' + error);
+        });
+    }
 }
 
 
@@ -206,11 +204,12 @@ async function registerComponent() {
                 avatar = mod(count + 1, runners.length);
             }
 
-            memo = `{"avatar":${avatar},"lastname":"${firstname} ${lastname}","accountId":"${accountId}","country":"${country}"}`
-            console.log(memo);
+            var memoObj = {avatar,firstname,lastname,country};
+
+            console.log(memoObj);
 
             console.log("yaaaa");
-            createAccount(memo);
+            createAccount(memoObj);
 
 
 
@@ -264,7 +263,7 @@ console.log(validate(JSON.parse(`{"avatar":0,"lastname":"Tony","accountId":"0.0.
 registerComponent();
 
 
-async function createAccount(memo) {
+async function createAccount(memoObj) {
 
     //Grab your Hedera testnet account ID and private key from your .env file
     const myAccountId = process.env.MY_ACCOUNT_ID;
@@ -312,7 +311,7 @@ async function createAccount(memo) {
     const newAccountTransactionResponse = await new AccountCreateTransaction()
         .setKey(newAccountPublicKey)
         .setInitialBalance(Hbar.fromTinybars(1000))
-        .setTransactionMemo(memo)
+        //.setTransactionMemo(memo)
         .execute(client);
 
     // Get the new account ID
@@ -347,9 +346,12 @@ async function createAccount(memo) {
 
     // No KYC
 
+    memo = `{"avatar":${memoObj.avatar},"fullname":"${memoObj.firstname} ${memoObj.lastname}","accountId":"${newAccountId}","country":"${memoObj.country}"}`
+
     await (await (await new TransferTransaction()
         .addTokenTransfer(tokenId, client.operatorAccountId, -amount)
         .addTokenTransfer(tokenId, newAccountId, amount)
+        .setTransactionMemo(memo)
         .sign(newAccountPrivateKey))
         .execute(client))
         .getReceipt(client);
@@ -362,27 +364,25 @@ async function createAccount(memo) {
 function footerMenu() {
 
     document.getElementById("mnemonicBtn").addEventListener('click', () => {
-        console.log("ok");
         document.getElementById("modal-card-foot").innerHTML =
-            `
+        `
         <button class="button" id="accountidBtn">I wrote down my account id</button>
         `;
         document.getElementById("modal-card-title").innerHTML = `Account creation completed`;
         document.getElementById("alert").innerHTML = `Write down your account id`;
 
         document.getElementById("accountInfo").innerHTML =
-            `
+        `
         <div class="column" style="margin: 30px">
         <span class="tag is-info is-large is-light">${accountId}</span>
         </div>
         `;
 
         document.getElementById("accountidBtn").addEventListener('click', () => {
-            console.log("ok3");
             document.getElementById("modal-card-title").innerHTML = `Device registration`;
             document.getElementById("alert").innerHTML = `Connect your device`;
             document.getElementById("accountInfo").innerHTML =
-                `
+            `
             <div class="column" style="margin: 30px">
             <figure class="image is-128x128">
             <img src="usb.png" alt="">
@@ -390,71 +390,91 @@ function footerMenu() {
             </div>
             `;
             document.getElementById("modal-card-foot").innerHTML =
-                `
+            `
             <button class="button" id="registerBtn">Register Device</button>
             `;
 
             let connectButton = document.querySelector('#registerBtn');
 
             function connect() {
-                //connectButton.classList.add("is-loading");
-              console.log('Connecting to ' + port.device_.productName + '...');
-              port.connect().then(() => {
-                console.log(port);
-                console.log('Connected.');
-                let view = new Uint8Array(5);
-                view[0] = 7;
-                view[1] = 7;
-                view[2] = 7;
-                view[3] = 2;
-                view[4] = 7;
-                port.send(view);
-                let dr = new Uint8Array(1);
-                dr[0] = 255;
-                port.send(dr);
-                //withdrawFruit('D')
-                //withdrawFruit('A')
-                //withdrawFruit('26789')
-                //connectButton.textContent = 'Disconnect Device';
-                port.onReceive = data => {
-                  let textDecoder = new TextDecoder();
-                   console.log(textDecoder.decode(data));
-                   try{
-                       console.log(JSON.parse(textDecoder.decode(data)));
-                   }catch(err){
-                       console.log(err);
-                   }
-                }
-                port.onReceiveError = error => {
-                  console.log('Receive error: ' + error);
-                };
-              }, error => {
-                console.log('Connection error: ' + error);
-              });
-            };
-        
-            connectButton.addEventListener('click', function () {
-              if (port) {
-                port.disconnect();
-                //connectButton.textContent = 'Connect Device';
-                port = null;
-              } else {
-                serial.requestPort().then(selectedPort => {
-                  port = selectedPort;
-                  connect();
-                }).catch(error => {
-                  console.log('Connection error: ' + error);
+
+                console.log('Connecting to ' + port.device_.productName + '...');
+                port.connect().then(() => {
+                    console.log(port);
+                    console.log('Connected.');
+
+                    let textEncoder = new TextEncoder();
+                    console.log(accountId.toString());
+                    var accId = accountId.toString();
+                    let str = accId.slice(4, accId.length);
+                    console.log(str);
+                    port.send(textEncoder.encode(str)).catch(error => {
+                        console.log('Send error: ' + error);
+                    });
+
+                    port.onReceive = data => {
+                        let textDecoder = new TextDecoder();
+                        console.log(("0.0." + textDecoder.decode(data)) === accountId.toString());
+
+                        if (("0.0." + textDecoder.decode(data)) === accountId.toString()) {
+                            document.getElementById("alertBox").innerHTML = ``;
+                            document.getElementById("modal-card-title").innerHTML = `Registration completed`;
+
+                            document.getElementById("accountInfo").innerHTML =
+                                `
+                                <div class="column" style="margin: 30px">
+                                <figure class="image is-128x128">
+                                <img src="tick.png" alt="">
+                                </figure>
+                                </div>
+                                `;
+                            document.getElementById("modal-card-foot").innerHTML =
+                            `
+                            <button class="button" id="closeBtn">Close</button>
+                            `;
+                            document.getElementById("closeBtn").addEventListener('click', () => {
+                                window.location.replace("index.html");
+                            });
+                        }
+
+                        console.log(textDecoder.decode(data));
+                        try {
+                            console.log(JSON.parse(textDecoder.decode(data)));
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    }
+                    port.onReceiveError = error => {
+                        console.log('Receive error: ' + error);
+                    };
+                }, error => {
+                    console.log('Connection error: ' + error);
                 });
-              }
+            };
+
+            connectButton.addEventListener('click', function () {
+                if (port) {
+                    port.disconnect();
+ 
+                    port = null;
+                } else {
+                    serial.requestPort().then(selectedPort => {
+                        port = selectedPort;
+                        connect();
+
+                    }).catch(error => {
+                        console.log('Connection error: ' + error);
+                    });
+                }
             });
-        
+
             serial.getPorts().then(ports => {
-              if (ports.length == 0) {
-                console.log('No devices found.');
-              } else {
-                port = ports[0];
-                connect();
-              }
+                if (ports.length == 0) {
+                    console.log('No devices found.');
+                } else {
+                    port = ports[0];
+                    connect();
+                }
             });
 
         });

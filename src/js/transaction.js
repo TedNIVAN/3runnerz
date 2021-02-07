@@ -1,4 +1,4 @@
-import { Client, TokenId, TokenAssociateTransaction , AccountId, PrivateKey, TokenGrantKycTransaction, AccountCreateTransaction, AccountBalanceQuery, Hbar, TransferTransaction } from '@hashgraph/sdk'
+import { Client, TokenId, TokenAssociateTransaction, AccountId, PrivateKey, TokenGrantKycTransaction, AccountCreateTransaction, AccountBalanceQuery, Hbar, TransferTransaction } from '@hashgraph/sdk'
 
 export async function sendTransaction(accountId, memo, amount) {
     //Grab your Hedera testnet account ID and private key from your .env file
@@ -17,18 +17,19 @@ export async function sendTransaction(accountId, memo, amount) {
 
     client.setOperator(myAccountId, myPrivateKey);
 
-    const tokenId = TokenId.fromString("0.0.294201");
+    const tokenId = TokenId.fromString("0.0.300642");
     console.log(`token id = ${tokenId}`);
 
     await (await new TransferTransaction()
-        .addTokenTransfer(tokenId, AccountId.fromString(myAccountId), -amount)
-        .addTokenTransfer(tokenId, AccountId.fromString(accountId), amount)
+        .addTokenTransfer(tokenId, client.operatorAccountId, -amount)
+        .addTokenTransfer(tokenId, accountId, amount)
+        .setTransactionMemo(memo)
         .execute(client))
         .getReceipt(client);
 
-    console.log(`Sent ${amount} tokens from account ${myAccountId} to account ${accountId} on token ${tokenId}`);
+    console.log(`Sent ${amount} tokens from account ${client.operatorAccountId} to account ${accountId} on token ${tokenId}`);
 
-    window.location.replace("success.html");
+    window.location.replace("leaderboard.html");
 }
 
 function checkTx(a) {

@@ -49,18 +49,6 @@ function marketPlaceModalfunction() {
                 width: 200,
                 height: 200,
             });
-
-            /*
-           let name = item.getAttribute("name");
-           console.log(name);
-           document.getElementsByClassName("modal-card-title")[0].innerText = name;
-           let image = item.getAttribute("data-img");
-           console.log(image);
-           document.getElementById("fimg").src = image;
-           let price = item.getAttribute("data-price");
-           amountToPay = Number.parseFloat(price / ethPrice).toPrecision(2);
-           document.getElementById("fruit-price").innerText = 'COST $' + price + ' - PAY ' + amountToPay + ' ETH';
-           */
         })
     })
 
@@ -71,7 +59,6 @@ function marketPlaceModalfunction() {
     mdl.addEventListener("modal:close", function () {
         qrcode.clear();
     })
-
 }
 
 function marketplaceComponent() {
@@ -85,7 +72,6 @@ function marketplaceComponent() {
             </div>
             `;
         }
-
         marketPlaceModalfunction();
     });
 }
